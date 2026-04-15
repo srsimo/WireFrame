@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Islamic App – Wireframes</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a2e;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 30px 20px;
+  }
+
+  h1 {
+    color: #e8d5a3;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .subtitle {
+    color: #7a7a9a;
+    font-size: 13px;
+    margin-bottom: 30px;
+  }
+
+  /* PHONE SHELL */
+  .phone {
+    width: 375px;
+    height: 780px;
+    background: #f8f7f4;
+    border-radius: 48px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), inset 0 0 0 2px #333;
+    position: relative;
+    overflow: hidden;
+    border: 8px solid #111;
+  }
+
+  .phone::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 26px;
+    background: #111;
+    border-radius: 20px;
+    z-index: 100;
+  }
+
+  /* SCREEN */
+  .screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    background: #f8f7f4;
+    overflow: hidden;
+    position: absolute;
+    top: 0; left: 0;
+  }
+
+  .screen.active { display: flex; }
+
+  /* STATUS BAR */
+  .status-bar {
+    height: 50px;
+    background: transparent;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 24px 8px;
+    flex-shrink: 0;
+  }
+
+  .status-bar span { font-size: 12px; font-weight: 600; color: #333; }
+
+  /* TOP NAV */
+  .top-nav {
+    padding: 0 20px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .top-nav .title { font-size: 22px; font-weight: 700; color: #1a1a2e; }
+  .top-nav .subtitle-nav { font-size: 13px; color: #9a9ab0; margin-top: 2px; }
+  .top-nav .icon-btn {
+    width: 40px; height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    border: none;
+    font-size: 18px;
+  }
+
+  /* SCROLL CONTENT */
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px;
+    scrollbar-width: none;
+  }
+  .content::-webkit-scrollbar { display: none; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    height: 72px;
+    background: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 10px;
+    flex-shrink: 0;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+  }
+
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px; cursor: pointer; padding: 6px 14px; border-radius: 16px;
+    transition: all 0.2s;
+    border: none; background: transparent;
+  }
+
+  .nav-item.active { background: #e8f5e9; }
+  .nav-item .nav-icon { font-size: 22px; }
+  .nav-item .nav-label { font-size: 10px; font-weight: 600; color: #9a9ab0; }
+  .nav-item.active .nav-label { color: #2e7d52; }
+
+  /* CARDS */
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .card-title { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+  .card-subtitle { font-size: 12px; color: #9a9ab0; }
+
+  /* PRAYER ROW */
+  .prayer-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .prayer-row:last-child { border-bottom: none; }
+  .prayer-name { font-size: 15px; font-weight: 600; color: #1a1a2e; }
+  .prayer-time { font-size: 13px; color: #9a9ab0; }
+  .prayer-check {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; cursor: pointer; transition: all 0.2s;
+    border: none;
+  }
+  .prayer-check.done { background: #e8f5e9; color: #2e7d52; }
+  .prayer-check.pending { background: #f0f0f0; color: #ccc; }
+  .prayer-check.pending:hover { background: #e8f5e9; color: #2e7d52; }
+
+  /* STREAK BADGE */
+  .streak-badge {
+    background: linear-gradient(135deg, #ff9f43, #ee5a24);
+    border-radius: 12px;
+    padding: 4px 10px;
+    font-size: 12px; font-weight: 700; color: white;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+
+  /* GREEN BUTTON */
+  .btn-primary {
+    background: linear-gradient(135deg, #2e7d52, #1b5e37);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 14px 24px;
+    font-size: 15px; font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.9; transform: scale(0.99); }
+
+  .btn-secondary {
+    background: #f0f0f0;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 16px;
+    padding: 12px 24px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s;
+  }
+
+  /* HECHO BUTTON */
+  .btn-hecho {
+    background: linear-gradient(135deg, #2e7d52, #1b5e37);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 16px;
+    font-size: 16px; font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(46,125,82,0.35);
+  }
+  .btn-hecho.done {
+    background: #e8f5e9;
+    color: #2e7d52;
+    box-shadow: none;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 13px; font-weight: 700; color: #9a9ab0;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin: 16px 0 10px;
+  }
+
+  /* AVATAR */
+  .avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; color: white;
+    flex-shrink: 0;
+  }
+
+  /* STREAK TYPE CARDS */
+  .streak-type-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-bottom: 16px;
+  }
+  .streak-type-card {
+    background: white;
+    border: 2.5px solid #eee;
+    border-radius: 18px;
+    padding: 16px 12px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    cursor: pointer; transition: all 0.2s;
+    text-align: center;
+  }
+  .streak-type-card.selected {
+    border-color: #2e7d52;
+    background: #e8f5e9;
+  }
+  .streak-type-card .icon { font-size: 30px; }
+  .streak-type-card .label { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+  .streak-type-card .desc { font-size: 11px; color: #9a9ab0; line-height: 1.3; }
+
+  /* QURAN SURAH ROW */
+  .surah-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+  }
+  .surah-row:last-child { border-bottom: none; }
+  .surah-number {
+    width: 36px; height: 36px;
+    background: #e8f5e9;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #2e7d52;
+    flex-shrink: 0;
+  }
+  .surah-info { flex: 1; }
+  .surah-name { font-size: 14px; font-weight: 700; color: #1a1a2e; }
+  .surah-meta { font-size: 12px; color: #9a9ab0; }
+  .surah-arabic { font-size: 18px; color: #2e7d52; }
+
+  /* CHAT LIST */
+  .chat-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+  }
+  .chat-row:last-child { border-bottom: none; }
+  .chat-info { flex: 1; }
+  .chat-name { font-size: 14px; font-weight: 700; color: #1a1a2e; }
+  .chat-preview { font-size: 12px; color: #9a9ab0; margin-top: 2px; }
+  .chat-time { font-size: 11px; color: #bbb; }
+  .unread-dot {
+    width: 10px; height: 10px; background: #2e7d52;
+    border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* MESSAGES */
+  .messages-container { padding: 10px 0; }
+  .msg {
+    display: flex; margin-bottom: 12px;
+    flex-direction: column;
+  }
+  .msg.sent { align-items: flex-end; }
+  .msg.recv { align-items: flex-start; }
+  .msg-bubble {
+    max-width: 72%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 14px; line-height: 1.4;
+  }
+  .msg.sent .msg-bubble { background: #2e7d52; color: white; border-bottom-right-radius: 4px; }
+  .msg.recv .msg-bubble { background: white; color: #1a1a2e; border-bottom-left-radius: 4px; box-shadow: 0 1px 6px rgba(0,0,0,0.08); }
+  .msg-time { font-size: 10px; color: #bbb; margin-top: 4px; padding: 0 4px; }
+
+  /* MESSAGE INPUT */
+  .msg-input-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 20px;
+    background: white;
+    border-top: 1px solid #eee;
+    flex-shrink: 0;
+  }
+  .msg-input {
+    flex: 1; background: #f0f0f0; border: none; border-radius: 24px;
+    padding: 10px 16px; font-size: 14px; outline: none;
+  }
+  .send-btn {
+    width: 40px; height: 40px; background: #2e7d52;
+    border: none; border-radius: 50%; cursor: pointer;
+    font-size: 16px; color: white;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* PROFILE */
+  .profile-header {
+    background: linear-gradient(135deg, #1a1a2e, #2e4a3e);
+    padding: 30px 20px 24px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    flex-shrink: 0;
+  }
+  .profile-avatar-large {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, #c9a84c, #e8d5a3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 700; color: #1a1a2e;
+    border: 3px solid rgba(255,255,255,0.2);
+  }
+  .profile-name { font-size: 18px; font-weight: 700; color: white; }
+  .profile-handle { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+  /* STAT BOXES */
+  .stats-row {
+    display: flex; gap: 10px; margin-bottom: 12px;
+  }
+  .stat-box {
+    flex: 1; background: white; border-radius: 16px;
+    padding: 14px 12px; text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .stat-value { font-size: 22px; font-weight: 800; color: #1a1a2e; }
+  .stat-label { font-size: 11px; color: #9a9ab0; margin-top: 2px; }
+
+  /* BACK BUTTON */
+  .back-btn {
+    background: transparent; border: none;
+    font-size: 20px; cursor: pointer; padding: 4px;
+    color: #1a1a2e;
+  }
+
+  /* MEMBER ROW */
+  .member-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .member-row:last-child { border-bottom: none; }
+  .member-info { flex: 1; }
+  .member-name { font-size: 14px; font-weight: 600; color: #1a1a2e; }
+  .member-streak { font-size: 12px; color: #9a9ab0; }
+  .member-done { font-size: 20px; }
+
+  /* RACHA LIST CARD */
+  .racha-card {
+    background: white;
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .racha-card:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .racha-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .racha-icon { font-size: 32px; }
+  .racha-members {
+    display: flex; gap: -8px;
+  }
+  .mini-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 2px solid white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: white;
+    margin-left: -6px;
+    flex-shrink: 0;
+  }
+  .mini-avatar:first-child { margin-left: 0; }
+
+  /* QURAN READER */
+  .quran-header {
+    background: linear-gradient(135deg, #1a1a2e, #2e4a3e);
+    padding: 16px 20px;
+    flex-shrink: 0;
+  }
+  .quran-title { font-size: 20px; font-weight: 700; color: white; }
+  .quran-subtitle { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .quran-arabic-large {
+    text-align: center; font-size: 26px; color: #2e7d52;
+    padding: 16px; line-height: 2.2;
+    direction: rtl;
+  }
+  .ayah-row {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .ayah-arabic { font-size: 20px; color: #1a1a2e; text-align: right; direction: rtl; margin-bottom: 6px; line-height: 1.8; }
+  .ayah-translation { font-size: 13px; color: #6a6a8a; line-height: 1.5; }
+  .ayah-number { font-size: 11px; color: #c9a84c; font-weight: 700; }
+
+  /* FAB */
+  .fab {
+    position: absolute;
+    bottom: 90px; right: 20px;
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, #2e7d52, #1b5e37);
+    border-radius: 50%; border: none;
+    font-size: 24px; color: white; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(46,125,82,0.4);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10;
+  }
+
+  /* ONBOARDING */
+  .onboarding-bg {
+    background: linear-gradient(160deg, #1a1a2e 0%, #2e4a3e 60%, #1b5e37 100%);
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px 28px 20px;
+    text-align: center;
+  }
+  .onboarding-icon { font-size: 72px; margin-bottom: 24px; }
+  .onboarding-title { font-size: 28px; font-weight: 800; color: white; line-height: 1.2; margin-bottom: 12px; }
+  .onboarding-desc { font-size: 15px; color: rgba(255,255,255,0.65); line-height: 1.6; margin-bottom: 36px; }
+  .onboarding-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+  .dot.active { background: #c9a84c; width: 24px; border-radius: 4px; }
+
+  /* TAGS */
+  .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #e8f5e9; color: #2e7d52;
+    border-radius: 10px; padding: 4px 10px;
+    font-size: 12px; font-weight: 600;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap {
+    background: #f0f0f0; border-radius: 8px; height: 6px; overflow: hidden;
+  }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #2e7d52, #c9a84c); border-radius: 8px; }
+
+  /* SHARED STREAK CHIP */
+  .shared-streak-chip {
+    display: flex; align-items: center; gap: 8px;
+    background: #e8f5e9; border-radius: 14px; padding: 8px 12px;
+    margin-bottom: 8px;
+  }
+  .shared-streak-chip .chip-icon { font-size: 20px; }
+  .shared-streak-chip .chip-info { flex: 1; }
+  .shared-streak-chip .chip-name { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+  .shared-streak-chip .chip-days { font-size: 11px; color: #2e7d52; font-weight: 600; }
+
+  /* INPUT FIELD */
+  .input-field {
+    width: 100%; background: white; border: 2px solid #eee;
+    border-radius: 14px; padding: 12px 16px;
+    font-size: 15px; outline: none;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  .input-field:focus { border-color: #2e7d52; }
+
+  /* GOLD ACCENT */
+  .gold { color: #c9a84c; }
+
+  /* NOTIFICATION BANNER */
+  .notif-banner {
+    background: linear-gradient(135deg, #c9a84c, #e8d5a3);
+    border-radius: 16px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 12px;
+  }
+  .notif-icon { font-size: 24px; }
+  .notif-text { flex: 1; }
+  .notif-title { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+  .notif-desc { font-size: 11px; color: #6a5a2e; }
+
+  /* BOOKMARK BANNER */
+  .bookmark-banner {
+    background: linear-gradient(135deg, #1a1a2e, #2e4a3e);
+    border-radius: 16px; padding: 14px;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px; cursor: pointer;
+  }
+  .bookmark-icon { font-size: 28px; }
+  .bookmark-info { flex: 1; }
+  .bookmark-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); }
+  .bookmark-value { font-size: 15px; font-weight: 800; color: white; margin-top: 2px; }
+
+  /* SCREEN NAV MAP */
+  /* Used in JS */
+
+  /* ANIMATION */
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+  .animate-pulse { animation: pulse 0.4s ease; }
+
+  /* SCREEN LABEL */
+  .screen-label {
+    position: absolute;
+    top: 8px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px; color: #555;
+    background: rgba(255,255,255,0.8);
+    padding: 2px 8px; border-radius: 8px;
+    z-index: 200;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  /* LEGEND */
+  .legend {
+    margin-top: 20px;
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    max-width: 400px;
+  }
+  .legend-item {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 6px 12px;
+    font-size: 12px; color: #ccc; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .legend-item:hover { background: rgba(255,255,255,0.2); }
+  .legend-item.current { background: #2e7d52; color: white; }
+
+  /* SHIMMER for empty states */
+  .empty-state {
+    text-align: center; padding: 30px 20px;
+    color: #9a9ab0; font-size: 14px;
+  }
+  .empty-icon { font-size: 40px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<h1>☪ Islamic App · Wireframes</h1>
+<p class="subtitle">Toca los elementos para navegar entre pantallas</p>
+
+<!-- PHONE -->
+<div class="phone">
+
+  <!-- ========== SCREEN: ONBOARDING ========== -->
+  <div class="screen active" id="screen-onboarding">
+    <div class="onboarding-bg">
+      <div class="onboarding-icon">☪️</div>
+      <h2 class="onboarding-title">Tu fe,<br>tu comunidad</h2>
+      <p class="onboarding-desc">Mantén tus rezos, comparte tu progreso con amigos y conecta con el Corán — de forma sencilla y cercana.</p>
+      <div class="onboarding-dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <button class="btn-primary" onclick="go('home')" style="max-width:280px">Empezar →</button>
+      <p style="color:rgba(255,255,255,0.4); font-size:12px; margin-top:12px; cursor:pointer" onclick="go('home')">Ya tengo cuenta · Iniciar sesión</p>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: HOME ========== -->
+  <div class="screen" id="screen-home">
+    <div class="status-bar"><span>9:41</span><span>◼◼◼ 📶 🔋</span></div>
+    <div class="top-nav">
+      <div>
+        <div class="title">Salam, Mohammed 👋</div>
+        <div class="subtitle-nav">Miércoles, 15 de Abril</div>
+      </div>
+      <button class="icon-btn" onclick="go('profile')">👤</button>
+    </div>
+    <div class="content">
+
+      <!-- Notification banner -->
+      <div class="notif-banner">
+        <div class="notif-icon">🕌</div>
+        <div class="notif-text">
+          <div class="notif-title">Asr en 12 minutos</div>
+          <div class="notif-desc">¡Tu racha lleva 14 días consecutivos!</div>
+        </div>
+        <div class="streak-badge">🔥 14</div>
+      </div>
+
+      <!-- Today's prayers -->
+      <div class="section-title">Rezos de hoy</div>
+      <div class="card">
+        <div class="prayer-row">
+          <div>
+            <div class="prayer-name">Fajr</div>
+            <div class="prayer-time">05:42</div>
+          </div>
+          <button class="prayer-check done">✓</button>
+        </div>
+        <div class="prayer-row">
+          <div>
+            <div class="prayer-name">Dhuhr</div>
+            <div class="prayer-time">13:58</div>
+          </div>
+          <button class="prayer-check done">✓</button>
+        </div>
+        <div class="prayer-row">
+          <div>
+            <div class="prayer-name">Asr</div>
+            <div class="prayer-time">17:22</div>
+          </div>
+          <button class="prayer-check pending" onclick="markDone(this)">○</button>
+        </div>
+        <div class="prayer-row">
+          <div>
+            <div class="prayer-name">Maghrib</div>
+            <div class="prayer-time">20:31</div>
+          </div>
+          <button class="prayer-check pending">○</button>
+        </div>
+        <div class="prayer-row">
+          <div>
+            <div class="prayer-name">Isha</div>
+            <div class="prayer-time">22:05</div>
+          </div>
+          <button class="prayer-check pending">○</button>
+        </div>
+      </div>
+
+      <!-- Corán progress -->
+      <div class="section-title">Progreso del Corán</div>
+      <div class="card" onclick="go('quran')" style="cursor:pointer">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
+          <div class="card-title">📖 Al-Baqara · Ayah 143</div>
+          <div class="tag">Continuar →</div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width:12%"></div>
+        </div>
+        <div style="font-size:11px; color:#9a9ab0; margin-top:6px">12% del Corán completado</div>
+      </div>
+
+      <!-- Active streaks -->
+      <div class="section-title">Mis rachas</div>
+      <div class="racha-card" onclick="go('racha-detail')">
+        <div class="racha-card-header">
+          <div>
+            <div class="card-title">🌙 Fajr todos los días</div>
+            <div class="card-subtitle">con Yasin y Omar</div>
+          </div>
+          <div class="streak-badge">🔥 14</div>
+        </div>
+        <div style="display:flex; gap:-8px">
+          <div class="mini-avatar" style="background:#2e7d52">M</div>
+          <div class="mini-avatar" style="background:#1565c0">Y</div>
+          <div class="mini-avatar" style="background:#c9a84c; color:#1a1a2e">O</div>
+        </div>
+      </div>
+
+      <div style="height: 16px"></div>
+    </div>
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+      <button class="nav-item active" onclick="go('home')"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></button>
+      <button class="nav-item" onclick="go('rachas')"><span class="nav-icon">🔥</span><span class="nav-label">Rachas</span></button>
+      <button class="nav-item" onclick="go('quran')"><span class="nav-icon">📖</span><span class="nav-label">Corán</span></button>
+      <button class="nav-item" onclick="go('chat')"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
+      <button class="nav-item" onclick="go('profile')"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span></button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: RACHAS ========== -->
+  <div class="screen" id="screen-rachas">
+    <div class="status-bar"><span>9:41</span><span>◼◼◼ 📶 🔋</span></div>
+    <div class="top-nav">
+      <div>
+        <div class="title">Mis Rachas</div>
+        <div class="subtitle-nav">3 rachas activas</div>
+      </div>
+      <button class="icon-btn" onclick="go('crear-racha')">＋</button>
+    </div>
+    <div class="content">
+
+      <div class="racha-card" onclick="go('racha-detail')">
+        <div class="racha-card-header">
+          <div>
+            <div class="card-title">🌙 Fajr todos los días</div>
+            <div class="card-subtitle">con Yasin y Omar</div>
+          </div>
+          <div class="streak-badge">🔥 14</div>
+        </div>
+        <div style="display:flex; gap:4px; margin-top:8px">
+          <div class="mini-avatar" style="background:#2e7d52">M</div>
+          <div class="mini-avatar" style="background:#1565c0">Y</div>
+          <div class="mini-avatar" style="background:#c9a84c; color:#1a1a2e">O</div>
+        </div>
+        <div style="margin-top:12px">
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:#9a9ab0; margin-bottom:4px">
+            <span>Progreso de hoy</span>
+            <span>2/3 completado</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:66%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="racha-card" onclick="go('racha-detail')">
+        <div class="racha-card-header">
+          <div>
+            <div class="card-title">🕌 5 rezos diarios</div>
+            <div class="card-subtitle">solo yo</div>
+          </div>
+          <div class="streak-badge">🔥 7</div>
+        </div>
+        <div style="display:flex; gap:4px; margin-top:8px">
+          <div class="mini-avatar" style="background:#2e7d52">M</div>
+        </div>
+        <div style="margin-top:12px">
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:#9a9ab0; margin-bottom:4px">
+            <span>Progreso de hoy</span>
+            <span>2/5 completado</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:40%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="racha-card" onclick="go('racha-detail')">
+        <div class="racha-card-header">
+          <div>
+            <div class="card-title">📿 Mis rezos (libre)</div>
+            <div class="card-subtitle">con Bilal</div>
+          </div>
+          <div class="streak-badge">🔥 3</div>
+        </div>
+        <div style="display:flex; gap:4px; margin-top:8px">
+          <div class="mini-avatar" style="background:#2e7d52">M</div>
+          <div class="mini-avatar" style="background:#7b1fa2">B</div>
+        </div>
+      </div>
+
+      <div style="height:16px"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="go('home')"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></button>
+      <button class="nav-item active" onclick="go('rachas')"><span class="nav-icon">🔥</span><span class="nav-label">Rachas</span></button>
+      <button class="nav-item" onclick="go('quran')"><span class="nav-icon">📖</span><span class="nav-label">Corán</span></button>
+      <button class="nav-item" onclick="go('chat')"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
+      <button class="nav-item" onclick="go('profile')"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span></button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: CREAR RACHA ========== -->
+  <div class="screen" id="screen-crear-racha">
+    <div class="status-bar"><span>9:41</span><span>◼◼◼ 📶 🔋</span></div>
+    <div class="top-nav">
+      <button class="back-btn" onclick="go('rachas')">←</button>
+      <div style="flex:1; padding-left:8px">
+        <div class="title">Nueva racha</div>
+      </div>
+    </div>
+    <div class="content">
+
+      <div class="section-title">Elige el tipo de racha</div>
+      <div class="streak-type-grid">
+        <div class="streak-type-card selected" onclick="selectStreakType(this)">
+          <div class="icon">🌙</div>
+          <div class="label">Fajr diario</div>
+          <div class="desc">Reza el Fajr cada mañana</div>
+        </div>
+        <div class="streak-type-card" onclick="selectStreakType(this)">
+          <div class="icon">🕌</div>
+          <div class="label">5 rezos</div>
+          <div class="desc">Completa todos los rezos del día</div>
+        </div>
+        <div class="streak-type-card" onclick="selectStreakType(this)">
+          <div class="icon">📿</div>
+          <div class="label">Mis rezos</div>
+          <div class="desc">Marca los rezos libremente</div>
+        </div>
+        <div class="streak-type-card" onclick="selectStreakType(this)">
+          <div class="icon">⭐</div>
+          <div class="label">Personalizado</div>
+          <div class="desc">Define tus propias reglas</div>
+        </div>
+      </div>
+
+      <div class="section-title">Nombre de la racha</div>
+      <input class="input-field" type="text" placeholder="Ej: Fajr squad 🌙" value="Fajr squad 🌙">
+
+      <div class="section-title">Invitar amigos</div>
+      <div class="card">
+        <div class="member-row">
+          <div class="avatar" style="background:#1565c0">Y</div>
+          <div class="member-info">
+            <div class="member-name">Yasin</div>
+            <div class="member-streak">@yasin_123</div>
+          </div>
+          <div style="width:28px; height:28px; background:#2e7d52; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:14px">✓</div>
+        </div>
+        <div class="member-row">
+          <div class="avatar" style="background:#c9a84c; color:#1a1a2e">O</div>
+          <div class="member-info">
+            <div class="member-name">Omar</div>
+            <div class="member-streak">@omar_bk</div>
+          </div>
+          <div style="width:28px; height:28px; background:#f0f0f0; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#ccc; font-size:14px">+</div>
+        </div>
+        <div class="member-row">
+          <div class="avatar" style="background:#7b1fa2">B</div>
+          <div class="member-info">
+            <div class="member-name">Bilal</div>
+            <div class="member-streak">@bilal_m</div>
+          </div>
+          <div style="width:28px; height:28px; background:#f0f0f0; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#ccc; font-size:14px">+</div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="go('rachas')" style="margin-top:8px">Crear racha 🔥</button>
+      <div style="height:24px"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="go('home')"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></button>
+      <button class="nav-item active" onclick="go('rachas')"><span class="nav-icon">🔥</span><span class="nav-label">Rachas</span></button>
+      <button class="nav-item" onclick="go('quran')"><span class="nav-icon">📖</span><span class="nav-label">Corán</span></button>
+      <button class="nav-item" onclick="go('chat')"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
+      <button class="nav-item" onclick="go('profile')"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span></button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: RACHA DETAIL ========== -->
+  <div class="screen" id="screen-racha-detail">
+    <div class="status-bar"><span>9:41</span><span>◼◼◼ 📶 🔋</span></div>
+    <div style="background: linear-gradient(135deg, #1a1a2e, #2e4a3e); padding: 14px 20px 20px; flex-shrink:0">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px">
+        <button class="back-btn" onclick="go('rachas')" style="color:white">←</button>
+        <div style="flex:1">
+          <div style="font-size:18px; font-weight:700; color:white">🌙 Fajr todos los días</div>
+          <div style="font-size:13px; color:rgba(255,255,255,0.55); margin-top:2px">con Yasin y Omar</div>
+        </div>
+        <div class="streak-badge">🔥 14</div>
+      </div>
+      <div style="display:flex; gap:10px">
+        <div style="flex:1; background:rgba(255,255,255,0.1); border-radius:12px; padding:10px; text-align:center">
+          <div style="font-size:22px; font-weight:800; color:white">14</div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.5)">Días seguidos</div>
+        </div>
+        <div style="flex:1; background:rgba(255,255,255,0.1); border-radius:12px; padding:10px; text-align:center">
+          <div style="font-size:22px; font-weight:800; color:#c9a84c">2/3</div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.5)">Completado hoy</div>
+        </div>
+        <div style="flex:1; background:rgba(255,255,255,0.1); border-radius:12px; padding:10px; text-align:center">
+          <div style="font-size:22px; font-weight:800; color:white">🏆 21</div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.5)">Mejor racha</div>
+        </div>
+      </div>
+    </div>
+    <div class="content" style="padding-top:16px">
+
+      <div class="section-title">Miembros · Hoy</div>
+      <div class="card">
+        <div class="member-row">
+          <div class="avatar" style="background:#2e7d52">M</div>
+          <div class="member-info">
+            <div class="member-name">Tú (Mohammed)</div>
+            <div class="member-streak">🔥 14 días</div>
+          </div>
+          <div class="member-done">✅</div>
+        </div>
+        <div class="member-row">
+          <div class="avatar" style="background:#1565c0">Y</div>
+          <div class="member-info">
+            <div class="member-name">Yasin</div>
+            <div class="member-streak">🔥 14 días</div>
+          </div>
+          <div class="member-done">✅</div>
+        </div>
+        <div class="member-row">
+          <div class="avatar" style="background:#c9a84c; color:#1a1a2e">O</div>
+          <div class="member-info">
+            <div class="member-name">Omar</div>
+            <div class="member-streak">🔥 11 días</div>
+          </div>
+          <div class="member-done" style="opacity:0.3">⏳</div>
+        </div>
+      </div>
+
+      <div class="section-title">Tu acción de hoy</div>
+      <button class="btn-hecho done" id="btn-hecho-main">
+        ✅ ¡Ya has rezado el Fajr hoy!
+      </button>
+
+      <div class="section-title" style="margin-top:16px">Historial · Esta semana</div>
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; padding:8px 0">
+          <div style="text-align:center; flex:1" v-for="d in days">
+            <div style="font-size:11px; color:#9a9ab0; margin-bottom:6px">L</div>
+            <div style="width:28px; height:28px; background:#e8f5e9; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto; font-size:14px">✓</div>
+          </div>
+          <div style="text-align:center; flex:1">
+            <div style="font-size:11px; color:#9a9ab0; margin-bottom:6px">M</div>
+            <div style="width:28px; height:28px; background:#e8f5e9; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto; font-size:14px">✓</div>
+          </div>
+          <div style="text-align:center; flex:1">
+            <div style="font-size:11px; color:#9a9ab0; margin-bottom:6px">X</div>
+            <div style="width:28px; height:28px; background:#e8f5e9; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto; font-size:14px">✓</div>
+          </div>
+          <div style="text-align:center; flex:1">
+            <div style="font-size:11px; color:#9a9ab0; margin-bottom:6px">J</div>
+            <div style="width:28px; height:28px; background:#e8f5e9; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto; font-size:14px">✓</div>
+          </div>
+          <div style="text-align:center; flex:1">
+            <div style="font-size:11px; color:#9a9ab0; margin-bottom:6px">V</div>
+            <div style="width:28px; height:28px; background:#e8f5e9; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto; font-size:14px">✓</div>
+          </div>
+          <div style="text-align:center; flex:1">
+            <div style="font-size:11px; color:#9a9ab0; margin-bottom:6px">S</div>
+            <div style="width:28px; height:28px; background:#e8f5e9; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto; font-size:14px">✓</div>
+          </div>
+          <div style="text-align:center; flex:1">
+            <div style="font-size:11px; color:#2e7d52; font-weight:700; margin-bottom:6px">H</div>
+            <div style="width:28px; height:28px; background:#2e7d52; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto; font-size:14px; color:white">✓</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:16px"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="go('home')"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></button>
+      <button class="nav-item active" onclick="go('rachas')"><span class="nav-icon">🔥</span><span class="nav-label">Rachas</span></button>
+      <button class="nav-item" onclick="go('quran')"><span class="nav-icon">📖</span><span class="nav-label">Corán</span></button>
+      <button class="nav-item" onclick="go('chat')"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
+      <button class="nav-item" onclick="go('profile')"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span></button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: QURAN ========== -->
+  <div class="screen" id="screen-quran">
+    <div class="status-bar" style="background:transparent; position:absolute; z-index:10"><span style="color:white">9:41</span><span style="color:white">◼◼◼ 📶 🔋</span></div>
+    <div class="quran-header" style="padding-top:50px">
+      <div class="quran-title">📖 El Corán</div>
+      <div class="quran-subtitle">114 suras · Tu progreso: 12%</div>
+    </div>
+    <div class="content" style="padding-top:12px">
+
+      <div class="bookmark-banner" onclick="go('quran-reader')">
+        <div class="bookmark-icon">🔖</div>
+        <div class="bookmark-info">
+          <div class="bookmark-title">Continuar lectura</div>
+          <div class="bookmark-value">Al-Baqara · Ayah 143</div>
+        </div>
+        <div style="color:rgba(255,255,255,0.6); font-size:18px">→</div>
+      </div>
+
+      <div class="section-title">Suras</div>
+      <div class="card">
+        <div class="surah-row" onclick="go('quran-reader')">
+          <div class="surah-number">1</div>
+          <div class="surah-info">
+            <div class="surah-name">Al-Fatiha · La Apertura</div>
+            <div class="surah-meta">7 ayahs · Mecana</div>
+          </div>
+          <div class="surah-arabic">الفاتحة</div>
+        </div>
+        <div class="surah-row" onclick="go('quran-reader')">
+          <div class="surah-number" style="background:#fff8e1; color:#c9a84c">2</div>
+          <div class="surah-info">
+            <div class="surah-name">Al-Baqara · La Vaca</div>
+            <div class="surah-meta">286 ayahs · Medinense · 🔖 143</div>
+          </div>
+          <div class="surah-arabic">البقرة</div>
+        </div>
+        <div class="surah-row">
+          <div class="surah-number">3</div>
+          <div class="surah-info">
+            <div class="surah-name">Aal-Imran · La Familia de Imran</div>
+            <div class="surah-meta">200 ayahs · Medinense</div>
+          </div>
+          <div class="surah-arabic">آل عمران</div>
+        </div>
+        <div class="surah-row">
+          <div class="surah-number">4</div>
+          <div class="surah-info">
+            <div class="surah-name">An-Nisa · Las Mujeres</div>
+            <div class="surah-meta">176 ayahs · Medinense</div>
+          </div>
+          <div class="surah-arabic">النساء</div>
+        </div>
+        <div class="surah-row">
+          <div class="surah-number">5</div>
+          <div class="surah-info">
+            <div class="surah-name">Al-Maida · La Mesa Servida</div>
+            <div class="surah-meta">120 ayahs · Medinense</div>
+          </div>
+          <div class="surah-arabic">المائدة</div>
+        </div>
+      </div>
+      <div style="height:16px"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="go('home')"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></button>
+      <button class="nav-item" onclick="go('rachas')"><span class="nav-icon">🔥</span><span class="nav-label">Rachas</span></button>
+      <button class="nav-item active" onclick="go('quran')"><span class="nav-icon">📖</span><span class="nav-label">Corán</span></button>
+      <button class="nav-item" onclick="go('chat')"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
+      <button class="nav-item" onclick="go('profile')"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span></button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: QURAN READER ========== -->
+  <div class="screen" id="screen-quran-reader">
+    <div class="status-bar"><span>9:41</span><span>◼◼◼ 📶 🔋</span></div>
+    <div class="top-nav">
+      <button class="back-btn" onclick="go('quran')">←</button>
+      <div style="flex:1; text-align:center">
+        <div class="title" style="font-size:17px">Al-Baqara</div>
+        <div class="subtitle-nav" style="text-align:center">Ayah 143 de 286</div>
+      </div>
+      <button class="icon-btn" onclick="shareProgress()">↗</button>
+    </div>
+    <div class="content">
+      <div class="progress-bar-wrap" style="margin-bottom:16px">
+        <div class="progress-bar-fill" style="width:50%"></div>
+      </div>
+
+      <div class="ayah-row">
+        <div class="ayah-number">141</div>
+        <div class="ayah-arabic">تِلۡكَ أُمَّةٌ قَدۡ خَلَتۡۖ لَهَا مَا كَسَبَتۡ وَلَكُم مَّا كَسَبۡتُمۡ</div>
+        <div class="ayah-translation">Esa es una comunidad que ya ha pasado. Ella tendrá lo que se ganó, y vosotros tendréis lo que os ganéis.</div>
+      </div>
+      <div class="ayah-row">
+        <div class="ayah-number">142</div>
+        <div class="ayah-arabic">سَيَقُولُ ٱلسُّفَهَآءُ مِنَ ٱلنَّاسِ مَا وَلَّىٰهُمۡ عَن قِبۡلَتِهِمُ</div>
+        <div class="ayah-translation">Los insensatos entre la gente dirán: "¿Qué los ha hecho alejarse de la alquibla que tenían?"</div>
+      </div>
+      <div class="ayah-row" style="background:#fffde7; border-radius:10px; padding:10px; margin-bottom:0; border-bottom:none">
+        <div class="ayah-number" style="color:#c9a84c">143 · 🔖</div>
+        <div class="ayah-arabic">وَكَذَٰلِكَ جَعَلۡنَٰكُمۡ أُمَّةً وَسَطًا لِّتَكُونُوا۟ شُهَدَآءَ عَلَى ٱلنَّاسِ</div>
+        <div class="ayah-translation">Y así os hemos hecho una comunidad intermedia para que seáis testigos ante la gente.</div>
+      </div>
+      <div class="ayah-row">
+        <div class="ayah-number">144</div>
+        <div class="ayah-arabic">قَدۡ نَرَىٰ تَقَلُّبَ وَجۡهِكَ فِي ٱلسَّمَآءِ</div>
+        <div class="ayah-translation">Vemos cómo diriges tu rostro hacia el cielo...</div>
+      </div>
+
+      <div style="height:16px"></div>
+    </div>
+    <!-- Share progress modal hint -->
+    <div id="share-toast" style="display:none; position:absolute; bottom:90px; left:20px; right:20px; background:#1a1a2e; color:white; border-radius:16px; padding:14px 16px; font-size:13px; z-index:50; text-align:center">
+      ✅ Progreso compartido con tus amigos
+    </div>
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="go('home')"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></button>
+      <button class="nav-item" onclick="go('rachas')"><span class="nav-icon">🔥</span><span class="nav-label">Rachas</span></button>
+      <button class="nav-item active" onclick="go('quran')"><span class="nav-icon">📖</span><span class="nav-label">Corán</span></button>
+      <button class="nav-item" onclick="go('chat')"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
+      <button class="nav-item" onclick="go('profile')"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span></button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: CHAT LIST ========== -->
+  <div class="screen" id="screen-chat">
+    <div class="status-bar"><span>9:41</span><span>◼◼◼ 📶 🔋</span></div>
+    <div class="top-nav">
+      <div>
+        <div class="title">Chat</div>
+      </div>
+      <button class="icon-btn">🔍</button>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="chat-row" onclick="go('conversation')">
+          <div class="avatar" style="background:#1565c0">Y</div>
+          <div class="chat-info">
+            <div class="chat-name">Yasin</div>
+            <div class="chat-preview">¿has rezado el fajr ya?</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px">
+            <div class="chat-time">09:32</div>
+            <div class="unread-dot"></div>
+          </div>
+        </div>
+        <div class="chat-row" onclick="go('conversation')">
+          <div class="avatar" style="background:#c9a84c; color:#1a1a2e">O</div>
+          <div class="chat-info">
+            <div class="chat-name">Omar</div>
+            <div class="chat-preview">Tío la racha va 🔥🔥</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px">
+            <div class="chat-time">Ayer</div>
+          </div>
+        </div>
+        <div class="chat-row" onclick="go('conversation')">
+          <div class="avatar" style="background:#7b1fa2">B</div>
+          <div class="chat-info">
+            <div class="chat-name">Bilal</div>
+            <div class="chat-preview">jajaj sip 😂 hasta mañana</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px">
+            <div class="chat-time">Lun</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="go('home')"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></button>
+      <button class="nav-item" onclick="go('rachas')"><span class="nav-icon">🔥</span><span class="nav-label">Rachas</span></button>
+      <button class="nav-item" onclick="go('quran')"><span class="nav-icon">📖</span><span class="nav-label">Corán</span></button>
+      <button class="nav-item active" onclick="go('chat')"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
+      <button class="nav-item" onclick="go('profile')"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span></button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: CONVERSATION ========== -->
+  <div class="screen" id="screen-conversation">
+    <div class="status-bar"><span>9:41</span><span>◼◼◼ 📶 🔋</span></div>
+    <div class="top-nav" style="padding-bottom:10px">
+      <button class="back-btn" onclick="go('chat')">←</button>
+      <div style="display:flex; align-items:center; gap:10px; flex:1; padding-left:8px; cursor:pointer" onclick="go('contact-profile')">
+        <div class="avatar" style="background:#1565c0; width:36px; height:36px; font-size:14px">Y</div>
+        <div>
+          <div style="font-size:15px; font-weight:700; color:#1a1a2e">Yasin</div>
+          <div style="font-size:11px; color:#2e7d52">🔥 14 días de racha juntos · Ver perfil</div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="messages-container">
+        <div class="msg recv">
+          <div class="msg-bubble">Salam bro! ¿cómo vas con el fajr?</div>
+          <div class="msg-time">09:15</div>
+        </div>
+        <div class="msg sent">
+          <div class="msg-bubble">Wa alaykum salam! Ayer me dormí un poco pero lo hice 😅</div>
+          <div class="msg-time">09:18</div>
+        </div>
+        <div class="msg recv">
+          <div class="msg-bubble">jajaja igual que yo la semana pasada, pero lo importante es no romper la racha 💪</div>
+          <div class="msg-time">09:20</div>
+        </div>
+        <div class="msg sent">
+          <div class="msg-bubble">¡exacto! ya llevamos 14 días 🔥🔥 hoy lo pongo como hecho</div>
+          <div class="msg-time">09:32</div>
+        </div>
+        <div class="msg recv">
+          <div class="msg-bubble">¿has rezado el fajr ya? 😂</div>
+          <div class="msg-time">09:33</div>
+        </div>
+      </div>
+    </div>
+    <div class="msg-input-row">
+      <input class="msg-input" type="text" placeholder="Escribe un mensaje...">
+      <button class="send-btn">↑</button>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: CONTACT PROFILE ========== -->
+  <div class="screen" id="screen-contact-profile">
+    <div class="status-bar" style="position:absolute; z-index:10"><span style="color:white">9:41</span><span style="color:white">◼◼◼ 📶 🔋</span></div>
+    <div class="profile-header" style="padding-top:55px">
+      <button class="back-btn" onclick="go('conversation')" style="color:white; align-self:flex-start; margin-bottom:8px">←</button>
+      <div class="profile-avatar-large" style="background: linear-gradient(135deg,#1565c0,#1e88e5)">Y</div>
+      <div class="profile-name">Yasin</div>
+      <div class="profile-handle">@yasin_123</div>
+    </div>
+    <div class="content" style="padding-top:16px">
+      <div class="section-title">Rachas que compartís</div>
+      <div class="shared-streak-chip">
+        <div class="chip-icon">🌙</div>
+        <div class="chip-info">
+          <div class="chip-name">Fajr todos los días</div>
+          <div class="chip-days">🔥 14 días juntos</div>
+        </div>
+      </div>
+
+      <div class="section-title">Sus stats</div>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-value">🔥 14</div>
+          <div class="stat-label">Racha actual</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">🏆 21</div>
+          <div class="stat-label">Mejor racha</div>
+        </div>
+      </div>
+
+      <div class="section-title">Progreso del Corán</div>
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+          <div class="card-title">📖 An-Nisa · Ayah 23</div>
+          <div class="tag">8%</div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width:8%"></div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="go('conversation')" style="margin-top:8px">Enviar mensaje 💬</button>
+      <div style="height:24px"></div>
+    </div>
+  </div>
+
+  <!-- ========== SCREEN: MY PROFILE ========== -->
+  <div class="screen" id="screen-profile">
+    <div class="status-bar" style="position:absolute; z-index:10"><span style="color:white">9:41</span><span style="color:white">◼◼◼ 📶 🔋</span></div>
+    <div class="profile-header" style="padding-top:55px">
+      <div class="profile-avatar-large">M</div>
+      <div class="profile-name">Mohammed</div>
+      <div class="profile-handle">@mohammed_bh</div>
+      <div style="display:flex; gap:8px; margin-top:8px">
+        <div class="tag" style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7)">✉️ mohammedbelhagod@gmail.com</div>
+      </div>
+    </div>
+    <div class="content" style="padding-top:16px">
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-value">🔥 14</div>
+          <div class="stat-label">Racha actual</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">🏆 21</div>
+          <div class="stat-label">Mejor racha</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">3</div>
+          <div class="stat-label">Grupos activos</div>
+        </div>
+      </div>
+
+      <div class="section-title">Mi progreso del Corán</div>
+      <div class="card" onclick="go('quran')">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+          <div class="card-title">📖 Al-Baqara · Ayah 143</div>
+          <div class="tag">12%</div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width:12%"></div>
+        </div>
+      </div>
+
+      <div class="section-title">Mis rachas</div>
+      <div class="shared-streak-chip" onclick="go('racha-detail')">
+        <div class="chip-icon">🌙</div>
+        <div class="chip-info">
+          <div class="chip-name">Fajr todos los días</div>
+          <div class="chip-days">🔥 14 días · con Yasin, Omar</div>
+        </div>
+      </div>
+      <div class="shared-streak-chip" onclick="go('racha-detail')">
+        <div class="chip-icon">🕌</div>
+        <div class="chip-info">
+          <div class="chip-name">5 rezos diarios</div>
+          <div class="chip-days">🔥 7 días · solo yo</div>
+        </div>
+      </div>
+
+      <button class="btn-secondary" style="margin-top:16px">⚙️ Ajustes</button>
+      <div style="height:24px"></div>
+    </div>
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="go('home')"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></button>
+      <button class="nav-item" onclick="go('rachas')"><span class="nav-icon">🔥</span><span class="nav-label">Rachas</span></button>
+      <button class="nav-item" onclick="go('quran')"><span class="nav-icon">📖</span><span class="nav-label">Corán</span></button>
+      <button class="nav-item" onclick="go('chat')"><span class="nav-icon">💬</span><span class="nav-label">Chat</span></button>
+      <button class="nav-item active" onclick="go('profile')"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span></button>
+    </div>
+  </div>
+
+</div>
+<!-- END PHONE -->
+
+<!-- LEGEND -->
+<div class="legend" id="legend">
+  <div class="legend-item current" onclick="go('onboarding')">Onboarding</div>
+  <div class="legend-item" onclick="go('home')">🏠 Inicio</div>
+  <div class="legend-item" onclick="go('rachas')">🔥 Rachas</div>
+  <div class="legend-item" onclick="go('crear-racha')">+ Crear racha</div>
+  <div class="legend-item" onclick="go('racha-detail')">📋 Detalle racha</div>
+  <div class="legend-item" onclick="go('quran')">📖 Corán</div>
+  <div class="legend-item" onclick="go('quran-reader')">📄 Lector Corán</div>
+  <div class="legend-item" onclick="go('chat')">💬 Chat</div>
+  <div class="legend-item" onclick="go('conversation')">✉️ Conversación</div>
+  <div class="legend-item" onclick="go('contact-profile')">👤 Perfil contacto</div>
+  <div class="legend-item" onclick="go('profile')">👤 Mi perfil</div>
+</div>
+
+<script>
+  const screenMap = {
+    'onboarding': 'screen-onboarding',
+    'home': 'screen-home',
+    'rachas': 'screen-rachas',
+    'crear-racha': 'screen-crear-racha',
+    'racha-detail': 'screen-racha-detail',
+    'quran': 'screen-quran',
+    'quran-reader': 'screen-quran-reader',
+    'chat': 'screen-chat',
+    'conversation': 'screen-conversation',
+    'contact-profile': 'screen-contact-profile',
+    'profile': 'screen-profile',
+  };
+
+  function go(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(screenMap[name]);
+    if (target) target.classList.add('active');
+
+    // Update legend
+    document.querySelectorAll('.legend-item').forEach(el => {
+      el.classList.toggle('current', el.getAttribute('onclick') === `go('${name}')`);
+    });
+  }
+
+  function markDone(btn) {
+    btn.classList.remove('pending');
+    btn.classList.add('done');
+    btn.textContent = '✓';
+    btn.classList.add('animate-pulse');
+    setTimeout(() => btn.classList.remove('animate-pulse'), 400);
+  }
+
+  function selectStreakType(card) {
+    document.querySelectorAll('.streak-type-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+  }
+
+  function shareProgress() {
+    const toast = document.getElementById('share-toast');
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2000);
+  }
+</script>
+
+</body>
+</html>
